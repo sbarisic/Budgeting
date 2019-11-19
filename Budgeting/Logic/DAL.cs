@@ -94,7 +94,12 @@ namespace Budgeting.Logic {
 		}
 
 		public void Insert<T>(string TableName, T Val) where T : class {
+			SQLiteCommand SQL = Con.CreateCommand();
+			SQL.CommandText = "INSERT INTO @table VALUES";
 
+
+
+			SQL.ExecuteNonQuery();
 		}
 	}
 }
