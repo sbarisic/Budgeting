@@ -46,12 +46,20 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
+                    <li id="navHome" class="nav-item" runat="server" visible="false">
                         <a class="nav-link" runat="server" href="~/">Home</a>
                     </li>
 
-                    <li class="nav-item">
+                    <li id="navSettings" class="nav-item" runat="server" visible="false">
                         <a class="nav-link" runat="server" href="~/Settings">Settings</a>
+                    </li>
+
+                    <li id="navLogout" class="nav-item" runat="server" visible="false">
+                        <a class="nav-link" runat="server" href="~/Logout">Logout</a>
+                    </li>
+
+                    <li id="navLogin" class="nav-item" runat="server" visible="false">
+                        <a class="nav-link" runat="server" href="~/Login">Login</a>
                     </li>
                 </ul>
             </div>

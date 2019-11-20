@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Data.SQLite;
 using System.Web;
 using ListControl = Budgeting.Controls.ListControl;
 
@@ -37,71 +38,11 @@ namespace Budgeting.Logic {
 		}
 	}
 
-	class Transaction {
-		[DALField("id")]
-		public int ID;
-
-		[DALField("date")]
-		public DateTime Date;
-
-		[DALField("value")]
-		public float Value;
-
-		[DALField("desc")]
-		public string Description;
-
-		[DALField("user")]
-		public int UserID;
-
-		public Transaction() {
-		}
-
-		public Transaction(int Year, int Month, int Day, float Value) {
-			Date = new DateTime(Year, Month, Day);
-			this.Value = Value;
-			Description = "";
-		}
-
-		public Transaction(DateTime Date, float Value) : this(Date.Year, Date.Month, Date.Day, Value) {
-		}
-
-		public Transaction(BudgetMonth Month, float Value) : this(Month.FirstDay, Value) {
-		}
-
-		public string FormatValue() {
-			if (!string.IsNullOrEmpty(Description))
-				return Description + "<br/>" + Transaction.FormatValue(Value);
-
-			return Transaction.FormatValue(Value);
-		}
-
-		public static string FormatValue(float Value) {
-			return string.Format("{0:0.00}", Value);
-		}
-
-		public static Transaction[] Sort(IEnumerable<Transaction> Transactions) {
-			List<Transaction> Trans = new List<Transaction>(Transactions);
-			Trans.Sort((X, Y) => DateTime.Compare(X.Date, Y.Date));
-			return Trans.ToArray();
-		}
-	}
-
-	class MaestroPlusOption {
-		[DALField("id")]
-		public int ID;
-
-		[DALField("month_count")]
-		public int MonthCount;
-
-		[DALField("interest")]
-		public float Interest;
-	}
-
 	class MaestroPlusCalculator {
 		MaestroPlusOption[] Options;
 
 		public MaestroPlusCalculator(DAL DbDAL) {
-			Options = DbDAL.Select<MaestroPlusOption>("maestroplus").ToArray();
+			Options = DbDAL.Select<MaestroPlusOption>().ToArray();
 		}
 
 		public void Calculate(int Months, float Value, out float OneTimePayment, out float Monthly) {
@@ -122,11 +63,11 @@ namespace Budgeting.Logic {
 		MaestroPlusCalculator MaestroCalc;
 		DAL DbDAL;
 
-		public BudgetCalculator(DAL DbDAL, int UserID) {
+		public BudgetCalculator(DAL DbDAL, User Usr) {
 			this.DbDAL = DbDAL;
 			MaestroCalc = new MaestroPlusCalculator(DbDAL);
 
-			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>("transactions", "user = " + UserID));
+			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>(Usr.CreateParameterID()));
 
 			/*AddMonthly(new DateTime(2019, 11, 15), 12, 6444.80f, "");
 			AddMonthly(new DateTime(2019, 11, 15), 12, 371.80f, "");

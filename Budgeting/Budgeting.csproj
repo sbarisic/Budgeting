@@ -116,8 +116,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Controls\ListControl.ascx" />
+    <Content Include="Logout.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Login.aspx" />
     <Content Include="Settings.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
@@ -182,7 +184,24 @@
       <DependentUpon>ListControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Logic\Budget.cs" />
+    <Compile Include="Logic\BudgetSession.cs" />
     <Compile Include="Logic\DAL.cs" />
+    <Compile Include="Logic\DatabaseEntries.cs" />
+    <Compile Include="Logic\PasswordManager.cs" />
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Settings.aspx.cs">
       <DependentUpon>Settings.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

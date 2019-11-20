@@ -20,12 +20,23 @@ namespace Budgeting {
 		protected void Page_Load(object sender, EventArgs e) {
 			DbDAL = new DAL();
 
+			if (BudgetSession.GetUser(DbDAL, "admin") == null) {
+				BudgetSession.CreateUser(DbDAL, "admin");
+				BudgetSession.ResetPassword(DbDAL, "admin", "root");
+			}
+
+			BudgetSession S = BudgetSession.Get(this);
+			if (!S.Authenticated()) {
+				Response.Redirect("Login.aspx");
+				return;
+			}
+
 			CreateMonthLists();
-			Calculate();
+			Calculate(S.CurrentUser);
 		}
 
-		void Calculate() {
-			BudgetCalculator Calculator = new BudgetCalculator(DbDAL, 0);
+		void Calculate(User Usr) {
+			BudgetCalculator Calculator = new BudgetCalculator(DbDAL, Usr);
 
 			for (int i = 0; i < MonthLists.Length; i++)
 				Calculator.CalculateBudget(MonthLists[i]);

@@ -10,51 +10,42 @@
 namespace Budgeting {
 
 
-	public partial class SiteMaster {
+	public partial class _Login {
 
 		/// <summary>
-		/// navHome control.
+		/// inputUsername control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navHome;
+		protected global::System.Web.UI.HtmlControls.HtmlInputText inputUsername;
 
 		/// <summary>
-		/// navSettings control.
+		/// inputPassword control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navSettings;
+		protected global::System.Web.UI.HtmlControls.HtmlInputPassword inputPassword;
 
 		/// <summary>
-		/// navLogout control.
+		/// btnSignIn control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLogout;
+		protected global::System.Web.UI.WebControls.Button btnSignIn;
 
 		/// <summary>
-		/// navLogin control.
+		/// labelError control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLogin;
-
-		/// <summary>
-		/// MainContent control.
-		/// </summary>
-		/// <remarks>
-		/// Auto-generated field.
-		/// To modify move field declaration from designer file to code-behind file.
-		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelError;
 	}
 }
