@@ -50,8 +50,8 @@
                         <a class="nav-link" runat="server" href="~/">Home</a>
                     </li>
 
-                    <li id="navSettings" class="nav-item" runat="server" visible="false">
-                        <a class="nav-link" runat="server" href="~/Settings">Settings</a>
+                    <li id="navManageData" class="nav-item" runat="server" visible="false">
+                        <a class="nav-link" runat="server" href="~/ManageData">Manage Data</a>
                     </li>
 
                     <li id="navLogout" class="nav-item" runat="server" visible="false">
@@ -75,6 +75,6 @@
 
     </form>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 </body>
 </html>

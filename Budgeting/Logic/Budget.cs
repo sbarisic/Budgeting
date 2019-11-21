@@ -66,25 +66,7 @@ namespace Budgeting.Logic {
 		public BudgetCalculator(DAL DbDAL, User Usr) {
 			this.DbDAL = DbDAL;
 			MaestroCalc = new MaestroPlusCalculator(DbDAL);
-
-			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>(Usr.CreateParameterID()));
-
-			/*AddMonthly(new DateTime(2019, 11, 15), 12, 6444.80f, "");
-			AddMonthly(new DateTime(2019, 11, 15), 12, 371.80f, "");
-			AddMonthly(new DateTime(2019, 11, 15), 12, -1328.01f, "Car");
-			AddMonthly(new DateTime(2019, 11, 15), 12, -100.00f, "Phone");
-			AddMonthly(new DateTime(2019, 11, 15), 12, -70.00f, "Health Ins");
-
-			AddMonthly(new DateTime(2019, 07, 27), 12, -666.67f, "Maestro1");
-			AddMonthly(new DateTime(2019, 07, 27), 12, -83.33f, "Maestro2");
-
-			//AddMaestroPlus(new DateTime(2019, 11, 18), 6, 3000);
-			//TransferMoneyToMonth(new DateTime(2019, 11, 18), new DateTime(2020, 1, 30), 1500);
-
-			AddTransaction(new Transaction(2019, 11, 15, -3500), "Uni");
-			AddTransaction(new Transaction(2020, 1, 15, -3500), "Uni");
-
-			AddTransaction(new Transaction(2020, 3, 15, -3000), "Car Reg");*/
+			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>(new SQLiteParameter("@user", Usr.ID)));
 		}
 
 		void AddTransaction(Transaction T, string Description) {
@@ -95,24 +77,24 @@ namespace Budgeting.Logic {
 			AllTransactions.Add(T);
 		}
 
-		void AddMonthly(DateTime Start, int Count, float Value, string Description) {
+		void AddMonthly(User Usr, DateTime Start, int Count, float Value, string Description) {
 			for (int i = 0; i < Count; i++)
-				AddTransaction(new Transaction(Start.AddMonths(i), Value), Description);
+				AddTransaction(new Transaction(Usr, Start.AddMonths(i), Value), Description);
 		}
 
-		void AddMaestroPlus(DateTime Start, int Months, float Value) {
+		void AddMaestroPlus(User Usr, DateTime Start, int Months, float Value) {
 			MaestroCalc.Calculate(Months, Value, out float OneTime, out float Monthly);
 
-			AddTransaction(new Transaction(Start, -OneTime), "Maestro OneTime");
-			AddTransaction(new Transaction(Start, Value), "Maestro Money");
-			AddMonthly(Start.AddMonths(1), Months, -Monthly, "Maestro");
+			AddTransaction(new Transaction(Usr, Start, -OneTime), "Maestro OneTime");
+			AddTransaction(new Transaction(Usr, Start, Value), "Maestro Money");
+			AddMonthly(Usr, Start.AddMonths(1), Months, -Monthly, "Maestro");
 		}
 
-		void TransferMoneyToMonth(DateTime From, DateTime To, float Value) {
+		void TransferMoneyToMonth(User Usr, DateTime From, DateTime To, float Value) {
 			bool Short = From.Year == To.Year;
 
-			AddTransaction(new Transaction(From, -Value), "Transfer to " + BudgetMonth.Fmt(To, Short));
-			AddTransaction(new Transaction(To, Value), "Transfer from " + BudgetMonth.Fmt(From, Short));
+			AddTransaction(new Transaction(Usr, From, -Value), "Transfer to " + BudgetMonth.Fmt(To, Short));
+			AddTransaction(new Transaction(Usr, To, Value), "Transfer from " + BudgetMonth.Fmt(From, Short));
 		}
 
 		IEnumerable<Transaction> GetTransactionsForMonth(BudgetMonth Month) {

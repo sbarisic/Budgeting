@@ -20,16 +20,14 @@ namespace Budgeting {
 			DAL DbDAL = new DAL();
 			BudgetSession S = BudgetSession.Get(this);
 
-			if (S.Authenticated()) {
-				Response.Redirect("Default.aspx");
+			if (!S.LogIn(DbDAL, inputUsername.Value, inputPassword.Value)) {
+				labelError.InnerText = "Wrong username or password";
+				labelError.Visible = true;
 				return;
 			}
 
-			if (S.LogIn(DbDAL, inputUsername.Value, inputPassword.Value)) {
-
-			} else {
-				labelError.InnerText = "Wrong username or password";
-				labelError.Visible = true;
+			if (S.Authenticated()) {
+				Response.Redirect("Default.aspx");
 				return;
 			}
 		}

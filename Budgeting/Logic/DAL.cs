@@ -88,7 +88,7 @@ namespace Budgeting.Logic {
 			return DataTable;
 		}
 
-		IEnumerable<T> Select<T>(string TableName, SQLiteParameter[] Conditions) where T : class, new() {
+		IEnumerable<T> Select<T>(string TableName, SQLiteParameter[] Conditions) where T : DbEntry, new() {
 			DataTable Table = Query(TableName, Conditions);
 			int RowCount = Table.Rows.Count;
 			FieldInfo[] Fields = DALFieldAttribute.GetDALFields<T>();
@@ -115,11 +115,11 @@ namespace Budgeting.Logic {
 			yield break;
 		}
 
-		public IEnumerable<T> Select<T>(params SQLiteParameter[] Conditions) where T : class, new() {
+		public IEnumerable<T> Select<T>(params SQLiteParameter[] Conditions) where T : DbEntry, new() {
 			return Select<T>(DALTableAttribute.GetTableName<T>(), Conditions);
 		}
 
-		void Insert<T>(string TableName, T Val) where T : class {
+		void Insert<T>(string TableName, T Val) where T : DbEntry {
 			Open();
 
 			List<SQLiteParameter> ValueColumns = new List<SQLiteParameter>();
@@ -153,8 +153,13 @@ namespace Budgeting.Logic {
 			Close();
 		}
 
-		public void Insert<T>(T Val) where T : class {
+		public void Insert<T>(T Val) where T : DbEntry {
 			Insert(DALTableAttribute.GetTableName<T>(), Val);
+		}
+
+		public void Insert<T>(IEnumerable<T> Vals) where T : DbEntry {
+			foreach (var V in Vals)
+				Insert(V);
 		}
 
 		public void Update<T>(T Val) where T : class {

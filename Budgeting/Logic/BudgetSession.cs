@@ -34,8 +34,7 @@ namespace Budgeting.Logic {
 				return false;
 
 			if (PasswordManager.IsValidPassword(Password, Usr.Salt, Usr.Hash)) {
-				UserLogin NewLogin = new UserLogin();
-
+				DbDAL.Insert(new UserLogin(Usr));
 				CurrentUser = Usr;
 				return true;
 			}

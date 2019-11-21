@@ -13,7 +13,7 @@ namespace Budgeting {
 
 			if (S.Authenticated()) {
 				navHome.Visible = true;
-				navSettings.Visible = true;
+				navManageData.Visible = true;
 				navLogout.Visible = true;
 			} else {
 				navLogin.Visible = true;

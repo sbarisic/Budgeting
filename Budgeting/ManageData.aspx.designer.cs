@@ -10,51 +10,51 @@
 namespace Budgeting {
 
 
-	public partial class SiteMaster {
+	public partial class _ManageData {
 
 		/// <summary>
-		/// navHome control.
+		/// divDateFromTo control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navHome;
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDateFromTo;
 
 		/// <summary>
-		/// navManageData control.
+		/// dateBegin control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navManageData;
+		protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateBegin;
 
 		/// <summary>
-		/// navLogout control.
+		/// dateEnd control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLogout;
+		protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateEnd;
 
 		/// <summary>
-		/// navLogin control.
+		/// btnConfirm control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl navLogin;
+		protected global::System.Web.UI.WebControls.Button btnConfirm;
 
 		/// <summary>
-		/// MainContent control.
+		/// labelError control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelError;
 	}
 }

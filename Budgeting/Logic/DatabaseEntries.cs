@@ -28,7 +28,7 @@ namespace Budgeting.Logic {
 	[DALTable("transactions")]
 	class Transaction : DbEntry {
 		[DALField("id")]
-		public int ID;
+		public int ID = 0;
 
 		[DALField("date")]
 		public DateTime Date;
@@ -45,16 +45,17 @@ namespace Budgeting.Logic {
 		public Transaction() {
 		}
 
-		public Transaction(int Year, int Month, int Day, float Value) {
+		public Transaction(User Usr, int Year, int Month, int Day, float Value) {
 			Date = new DateTime(Year, Month, Day);
 			this.Value = Value;
 			Description = "";
+			UserID = Usr.ID;
 		}
 
-		public Transaction(DateTime Date, float Value) : this(Date.Year, Date.Month, Date.Day, Value) {
+		public Transaction(User Usr, DateTime Date, float Value) : this(Usr, Date.Year, Date.Month, Date.Day, Value) {
 		}
 
-		public Transaction(BudgetMonth Month, float Value) : this(Month.FirstDay, Value) {
+		public Transaction(User Usr, BudgetMonth Month, float Value) : this(Usr, Month.FirstDay, Value) {
 		}
 
 		public string FormatValue() {
@@ -78,13 +79,13 @@ namespace Budgeting.Logic {
 	[DALTable("maestroplus")]
 	class MaestroPlusOption : DbEntry {
 		[DALField("id")]
-		public int ID;
+		public int ID = 0;
 
 		[DALField("month_count")]
-		public int MonthCount;
+		public int MonthCount = 0;
 
 		[DALField("interest")]
-		public float Interest;
+		public float Interest = 0;
 	}
 
 	[DALTable("users")]
@@ -108,9 +109,17 @@ namespace Budgeting.Logic {
 		public int ID;
 
 		[DALField("userid")]
-		public string UserID;
+		public int UserID;
 
-		[DALField("userid")]
-		public string Token;
+		[DALField("datetime")]
+		public DateTime DateTime;
+
+		public UserLogin() {
+		}
+
+		public UserLogin(User Usr) {
+			UserID = Usr.ID;
+			DateTime = DateTime.Now;
+		}
 	}
 }
