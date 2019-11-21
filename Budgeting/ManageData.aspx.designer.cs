@@ -13,13 +13,40 @@ namespace Budgeting {
 	public partial class _ManageData {
 
 		/// <summary>
-		/// divDateFromTo control.
+		/// listMainOptions control.
 		/// </summary>
 		/// <remarks>
 		/// Auto-generated field.
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDateFromTo;
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl listMainOptions;
+
+		/// <summary>
+		/// rptOptions control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Repeater rptOptions;
+
+		/// <summary>
+		/// divDateFrom control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDateFrom;
+
+		/// <summary>
+		/// lblDateFrom control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblDateFrom;
 
 		/// <summary>
 		/// dateBegin control.
@@ -29,6 +56,24 @@ namespace Budgeting {
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
 		protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateBegin;
+
+		/// <summary>
+		/// divDateTo control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDateTo;
+
+		/// <summary>
+		/// lblDateTo control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblDateTo;
 
 		/// <summary>
 		/// dateEnd control.

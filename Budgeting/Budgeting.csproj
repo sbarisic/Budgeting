@@ -205,6 +205,7 @@
     <Compile Include="Logic\DAL.cs" />
     <Compile Include="Logic\DatabaseEntries.cs" />
     <Compile Include="Logic\PasswordManager.cs" />
+    <Compile Include="Logic\Utils.cs" />
     <Compile Include="Logout.aspx.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

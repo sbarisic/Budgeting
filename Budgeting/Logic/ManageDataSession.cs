@@ -8,7 +8,12 @@ using System.Web.SessionState;
 
 namespace Budgeting.Logic {
 	public enum ManageDataState {
-		Main
+		Main,
+		AddSingle,
+		AddMultiple,
+		AddRepeating,
+		AddMaestroPlus,
+		ManageMaestroPlus
 	}
 
 	public class ManageDataSession {
