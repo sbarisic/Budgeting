@@ -8,6 +8,7 @@ using System.Web.SessionState;
 
 namespace Budgeting.Logic {
 	public enum ManageDataState {
+		None = 0,
 		Main,
 		AddSingle,
 		AddMultiple,
@@ -18,6 +19,7 @@ namespace Budgeting.Logic {
 
 	public class ManageDataSession {
 		public ManageDataState State;
+		public List<MainRadioButton> MainRadioButtons = new List<MainRadioButton>();
 
 		public ManageDataSession() {
 			State = ManageDataState.Main;
