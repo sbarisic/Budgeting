@@ -17,7 +17,12 @@ namespace Budgeting {
 							"~/Scripts/WebForms/GridView.js",
 							"~/Scripts/WebForms/DetailsView.js",
 							"~/Scripts/WebForms/TreeView.js",
-							"~/Scripts/WebForms/WebParts.js"));
+							"~/Scripts/WebForms/WebParts.js",
+
+							"~/Scripts/jquery-3.4.1.js",
+							"~/Scripts/umd/popper.js",
+							"~/Scripts/bootstrap.js"
+							));
 
 			// Order is very important for these files to work, they have explicit dependencies
 			bundles.Add(new ScriptBundle("~/bundles/MsAjaxJs").Include(

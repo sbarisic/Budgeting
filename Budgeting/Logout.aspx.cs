@@ -9,8 +9,10 @@ using System.Web.UI.WebControls;
 namespace Budgeting {
 	public partial class _Logout : Page {
 		protected void Page_Load(object sender, EventArgs e) {
-			BudgetSession S = BudgetSession.Get(this);
+			ManageDataSession Data = ManageDataSession.Get(this);
+			Data.State = ManageDataState.Main;
 
+			BudgetSession S = BudgetSession.Get(this);
 			if (S.Authenticated())
 				S.LogOut();
 

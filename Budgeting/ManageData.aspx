@@ -14,7 +14,7 @@
                 <ItemTemplate>
                     <div class="row justify-content-md-left w-25 mx-auto">
                         <div class="custom-control custom-radio">
-                            <input id="<%# Item.InputID %>" type="radio" class="custom-control-input" name="mainRadioGroup" onclick="setRadioResult('<%# Item.InputID %>')" <%# Item.CustomAttributes %>>
+                            <input id="<%# Item.InputID %>" type="radio" class="custom-control-input" name="mainRadioGroup" onclick="setRadioResult(<%# Item.InputIDLiteral %>)" <%# Item.CustomAttributes %>>
                             <label class="custom-control-label" for="<%# Item.InputID %>"><%# Item.Text %></label>
                         </div>
                     </div>

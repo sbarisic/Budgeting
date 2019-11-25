@@ -29,6 +29,12 @@ namespace Budgeting {
 			}
 		}
 
+		public string InputIDLiteral {
+			get {
+				return string.Format("'{0}'", InputID);
+			}
+		}
+
 		public MainRadioButton(string Text, ManageDataState State) {
 			this.Text = Text;
 			NewState = State;
@@ -56,6 +62,12 @@ namespace Budgeting {
 		}
 
 		void HandleShowState(ManageDataSession Data, ManageDataState State, bool ChangeState = false) {
+			divRadioOptions.Visible = false;
+			divDateFrom.Visible = false;
+			divDateTo.Visible = false;
+			divCurAmt.Visible = false;
+
+
 			switch (State) {
 				case ManageDataState.Main:
 					ShowMain();
