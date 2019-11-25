@@ -113,6 +113,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Controls\ListControl.ascx" />
+    <Content Include="ExchangeRates.aspx" />
     <Content Include="Logout.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="ManageData.aspx" />
@@ -203,6 +204,13 @@
     <Compile Include="Logic\DatabaseEntries.cs" />
     <Compile Include="Logic\PasswordManager.cs" />
     <Compile Include="Logic\Utils.cs" />
+    <Compile Include="ExchangeRates.aspx.cs">
+      <DependentUpon>ExchangeRates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExchangeRates.aspx.designer.cs">
+      <DependentUpon>ExchangeRates.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Logout.aspx.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -52,6 +52,10 @@
                         <a class="nav-link" runat="server" href="~/ManageData">Manage Data</a>
                     </li>
 
+                    <li id="navExchange" class="nav-item" runat="server" visible="false">
+                        <a class="nav-link" runat="server" href="~/ExchangeRates">Exchange Rates</a>
+                    </li>
+
                     <li id="navLogout" class="nav-item" runat="server" visible="false">
                         <a class="nav-link" runat="server" href="~/Logout">Logout</a>
                     </li>

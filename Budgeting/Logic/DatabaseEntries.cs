@@ -88,6 +88,25 @@ namespace Budgeting.Logic {
 		public float Interest = 0;
 	}
 
+	[DALTable("currencies")]
+	public class Currency : DbEntry {
+		[DALField("id")]
+		public int ID = 0;
+
+		[DALField("code")]
+		public string Code;
+
+		[DALField("num")]
+		public int Num;
+
+		[DALField("name")]
+		public string Name;
+
+		public override string ToString() {
+			return string.Format("{0} {1}", Num, Code);
+		}
+	}
+
 	[DALTable("users")]
 	public class User : DbEntry {
 		[DALField("id")]
