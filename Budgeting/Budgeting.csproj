@@ -112,6 +112,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Controls\DropdownButton.ascx" />
     <Content Include="Controls\ListControl.ascx" />
     <Content Include="ExchangeRates.aspx" />
     <Content Include="Logout.aspx" />
@@ -191,6 +192,12 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controls\DropdownButton.ascx.cs">
+      <DependentUpon>DropdownButton.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DropdownButton.ascx.designer.cs">
+      <DependentUpon>DropdownButton.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ListControl.ascx.cs">
       <DependentUpon>ListControl.ascx</DependentUpon>
     </Compile>

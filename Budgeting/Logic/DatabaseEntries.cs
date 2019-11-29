@@ -102,6 +102,12 @@ namespace Budgeting.Logic {
 		[DALField("name")]
 		public string Name;
 
+		[DALField("common")]
+		public bool Common;
+
+		[DALField("exchg")]
+		public bool Exchange;
+
 		public override string ToString() {
 			return string.Format("{0} {1}", Num, Code);
 		}

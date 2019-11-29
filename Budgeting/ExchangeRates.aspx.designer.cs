@@ -11,5 +11,50 @@ namespace Budgeting {
 
 
 	public partial class _ExchangeRates {
+
+		/// <summary>
+		/// titleManageData control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl titleManageData;
+
+		/// <summary>
+		/// divSelVal control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divSelVal;
+
+		/// <summary>
+		/// inSelVal control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlInputText inSelVal;
+
+		/// <summary>
+		/// btnDropdown control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::Budgeting.Controls.DropdownButton btnDropdown;
+
+		/// <summary>
+		/// DataTable control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Table DataTable;
 	}
 }

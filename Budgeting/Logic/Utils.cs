@@ -61,5 +61,22 @@ namespace Budgeting.Logic {
 
 			return Curs.ToArray();
 		}
+
+		public static Tuple<Currency, float>[] GetExchange(Currency Base, IEnumerable<Currency> Symbols) {
+			Symbols = Symbols.Where(S => S.Code != Base.Code);
+			string Link = string.Format("https://api.exchangeratesapi.io/latest?base={0}&symbols={1}", Base.Code, string.Join(",", Symbols.Select(S => S.Code)));
+
+			string JSONString = DownloadString(Link);
+			JObject JSONObj = (JObject)JsonConvert.DeserializeObject(JSONString);
+
+			// JSONObj["rates"]["HRK"].Value<float>()
+
+			List<Tuple<Currency, float>> Results = new List<Tuple<Currency, float>>();
+
+			foreach (var S in Symbols)
+				Results.Add(new Tuple<Currency, float>(S, JSONObj["rates"][S.Code].Value<float>()));
+
+			return Results.ToArray();
+		}
 	}
 }

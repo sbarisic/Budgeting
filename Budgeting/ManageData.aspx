@@ -74,7 +74,7 @@
             let mainRadioResult = "#MainContent_mainRadioResult";
 
             $(mainRadioResult).val(inputId);
-            console.log("Setting radio box value to " + $(mainRadioResult).val());
+            //console.log("Setting radio box value to " + $(mainRadioResult).val());
         }
     </script>
 </asp:Content>

@@ -40,6 +40,11 @@ namespace Budgeting.Logic {
 	}
 
 	public class DAL {
+		public enum QueryMode {
+			AND,
+			OR
+		}
+
 		SQLiteConnection Con;
 		DataSet DataSet = new DataSet();
 		DataTable DataTable;
@@ -60,7 +65,7 @@ namespace Budgeting.Logic {
 			Con.Close();
 		}
 
-		public DataTable Query(string TableName, SQLiteParameter[] Params) {
+		public DataTable Query(string TableName, SQLiteParameter[] Params, QueryMode Mode) {
 			Open();
 
 			string SelectQuery = "select * from " + TableName;
@@ -72,7 +77,7 @@ namespace Budgeting.Logic {
 				foreach (var P in Params)
 					Conditions.Add(string.Format("{0} = {1}", P.ParameterName.Substring(1), P.ParameterName));
 
-				SelectQuery = SelectQuery + string.Join(" and ", Conditions);
+				SelectQuery = SelectQuery + string.Join(string.Format(" {0} ", Mode), Conditions);
 			}
 
 			using (SQLiteCommand Cmd = Con.CreateCommand())
@@ -88,8 +93,8 @@ namespace Budgeting.Logic {
 			return DataTable;
 		}
 
-		IEnumerable<T> Select<T>(string TableName, SQLiteParameter[] Conditions) where T : DbEntry, new() {
-			DataTable Table = Query(TableName, Conditions);
+		IEnumerable<T> Select<T>(string TableName, SQLiteParameter[] Conditions, QueryMode Mode = QueryMode.AND) where T : DbEntry, new() {
+			DataTable Table = Query(TableName, Conditions, Mode);
 			int RowCount = Table.Rows.Count;
 			FieldInfo[] Fields = DALFieldAttribute.GetDALFields<T>();
 
@@ -115,8 +120,8 @@ namespace Budgeting.Logic {
 			yield break;
 		}
 
-		public IEnumerable<T> Select<T>(params SQLiteParameter[] Conditions) where T : DbEntry, new() {
-			return Select<T>(DALTableAttribute.GetTableName<T>(), Conditions);
+		public IEnumerable<T> Select<T>(SQLiteParameter[] Conditions = null, QueryMode Mode = QueryMode.AND) where T : DbEntry, new() {
+			return Select<T>(DALTableAttribute.GetTableName<T>(), Conditions ?? new SQLiteParameter[] { }, Mode);
 		}
 
 		void Insert<T>(string TableName, T Val) where T : DbEntry {

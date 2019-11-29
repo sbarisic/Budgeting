@@ -66,7 +66,7 @@ namespace Budgeting.Logic {
 		public BudgetCalculator(DAL DbDAL, User Usr) {
 			this.DbDAL = DbDAL;
 			MaestroCalc = new MaestroPlusCalculator(DbDAL);
-			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>(new SQLiteParameter("@user", Usr.ID)));
+			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>(new[] { new SQLiteParameter("@user", Usr.ID) }));
 		}
 
 		void AddTransaction(Transaction T, string Description) {

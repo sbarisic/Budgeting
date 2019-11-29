@@ -8,6 +8,8 @@ using System.Web.SessionState;
 
 namespace Budgeting.Logic {
 	public class BudgetSession {
+		public Currency ExchangeCurrency;
+
 		public static BudgetSession Get(Page P) {
 			return Get(P.Session);
 		}
@@ -51,7 +53,7 @@ namespace Budgeting.Logic {
 		}
 
 		public static User GetUser(DAL DbDAL, string Username) {
-			return DbDAL.Select<User>(new SQLiteParameter("@user", Username)).FirstOrDefault();
+			return DbDAL.Select<User>(new[] { new SQLiteParameter("@user", Username) }).FirstOrDefault();
 		}
 
 		public static void CreateUser(DAL DbDAL, string Username) {
