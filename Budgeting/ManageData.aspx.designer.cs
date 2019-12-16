@@ -103,6 +103,24 @@ namespace Budgeting {
 		protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateEnd;
 
 		/// <summary>
+		/// divMonthCount control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMonthCount;
+
+		/// <summary>
+		/// inMonthCount control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inMonthCount;
+
+		/// <summary>
 		/// divCurAmt control.
 		/// </summary>
 		/// <remarks>
@@ -112,6 +130,42 @@ namespace Budgeting {
 		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCurAmt;
 
 		/// <summary>
+		/// inCurAmt control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlInputText inCurAmt;
+
+		/// <summary>
+		/// btnCurSel control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlButton btnCurSel;
+
+		/// <summary>
+		/// divComment control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlGenericControl divComment;
+
+		/// <summary>
+		/// inComment control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.HtmlControls.HtmlInputText inComment;
+
+		/// <summary>
 		/// btnConfirm control.
 		/// </summary>
 		/// <remarks>
@@ -119,6 +173,15 @@ namespace Budgeting {
 		/// To modify move field declaration from designer file to code-behind file.
 		/// </remarks>
 		protected global::System.Web.UI.WebControls.Button btnConfirm;
+
+		/// <summary>
+		/// btnBack control.
+		/// </summary>
+		/// <remarks>
+		/// Auto-generated field.
+		/// To modify move field declaration from designer file to code-behind file.
+		/// </remarks>
+		protected global::System.Web.UI.WebControls.Button btnBack;
 
 		/// <summary>
 		/// labelError control.

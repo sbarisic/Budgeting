@@ -42,6 +42,9 @@ namespace Budgeting.Logic {
 		[DALField("user")]
 		public int UserID;
 
+		[DALField("maestro_monthly")]
+		public int MaestroMonthly;
+
 		public Transaction() {
 		}
 

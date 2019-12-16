@@ -6,6 +6,7 @@ using System.Linq;
 using System.Data.SQLite;
 using System.Web;
 using ListControl = Budgeting.Controls.ListControl;
+using System.Diagnostics;
 
 namespace Budgeting.Logic {
 	class BudgetMonth {
@@ -67,6 +68,10 @@ namespace Budgeting.Logic {
 			this.DbDAL = DbDAL;
 			MaestroCalc = new MaestroPlusCalculator(DbDAL);
 			AllTransactions = new List<Transaction>(DbDAL.Select<Transaction>(new[] { new SQLiteParameter("@user", Usr.ID) }));
+
+			//AddTransaction(new Transaction(Usr, 2019, 12, 16, 2000), "Christmas");
+
+			//DbDAL.Insert(new Transaction(Usr, 2019, 12, 16, 2000));
 		}
 
 		void AddTransaction(Transaction T, string Description) {
@@ -116,12 +121,34 @@ namespace Budgeting.Logic {
 				Sum += T.Value;
 
 				if (T.Value > 0)
-					LC.AddItem(T.FormatValue(), ItemColor.Green);
-				else
-					LC.AddItem(T.FormatValue(), ItemColor.Red);
+					LC.AddItem(T.FormatValue(), ItemColor.Green, T.ID.ToString(), OnTransactionRemove);
+				else {
+					ItemColor Clr = ItemColor.Red;
+
+					if (T.MaestroMonthly != 0)
+						Clr = ItemColor.Orange;
+
+					LC.AddItem(T.FormatValue(), Clr, T.ID.ToString(), OnTransactionRemove);
+				}
 			}
 
 			LC.AddItem(Transaction.FormatValue(Sum));
+		}
+
+		void OnTransactionRemove(HttpServerUtility Server, HttpRequest Request, ListControlEntry Entry) {
+			if (string.IsNullOrEmpty(Entry.Argument))
+				return;
+
+			int TranID = int.Parse(Entry.Argument);
+			Transaction Tran = AllTransactions.Where(T => T.ID == TranID).FirstOrDefault();
+
+			if (Tran == null)
+				return;
+
+			DbDAL.Delete(Tran);
+			//Debug.WriteLine("Fake delete!");
+
+			Server.TransferRequest(Request.Url.AbsolutePath, false);
 		}
 	}
 }

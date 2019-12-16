@@ -21,6 +21,8 @@ namespace Budgeting.Logic {
 		public ManageDataState State;
 		public List<MainRadioButton> MainRadioButtons = new List<MainRadioButton>();
 
+		public Currency SelectedCurrency;
+
 		public ManageDataSession() {
 			State = ManageDataState.Main;
 		}

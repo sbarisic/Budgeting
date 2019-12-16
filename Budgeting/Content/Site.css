@@ -45,3 +45,8 @@ textarea {
 .list-group-item-dark {
     background-color: rgb(62, 68, 74);
 }
+
+.nolink {
+    text-decoration: inherit;
+    color: inherit;
+}

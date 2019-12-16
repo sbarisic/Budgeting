@@ -21,7 +21,8 @@ namespace Budgeting {
 
 							"~/Scripts/jquery-3.4.1.js",
 							"~/Scripts/umd/popper.js",
-							"~/Scripts/bootstrap.js"
+							"~/Scripts/bootstrap.js",
+							"~/Scripts/Site.js"
 							));
 
 			// Order is very important for these files to work, they have explicit dependencies

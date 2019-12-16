@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using System.Data.SQLite;
 
 namespace Budgeting {
 	public class MainRadioButton {
@@ -58,6 +59,12 @@ namespace Budgeting {
 			}
 
 			ManageDataSession Data = ManageDataSession.Get(this);
+
+			if (Data.SelectedCurrency == null) {
+				DAL DbDAL = new DAL();
+				Data.SelectedCurrency = DbDAL.Select<Currency>().Where(C => C.Code == "HRK").First();
+			}
+
 			HandleShowState(Data, Data.State);
 		}
 
@@ -66,7 +73,11 @@ namespace Budgeting {
 			divDateFrom.Visible = false;
 			divDateTo.Visible = false;
 			divCurAmt.Visible = false;
+			divMonthCount.Visible = false;
 
+			btnBack.Visible = true;
+
+			btnCurSel.InnerText = Data.SelectedCurrency.Code;
 
 			switch (State) {
 				case ManageDataState.Main:
@@ -75,6 +86,14 @@ namespace Budgeting {
 
 				case ManageDataState.AddSingle:
 					ShowSingleTransaction();
+					break;
+
+				case ManageDataState.AddMultiple:
+					ShowMultipleTransaction();
+					break;
+
+				case ManageDataState.AddMaestroPlus:
+					ShowAddMaestro();
 					break;
 
 				default:
@@ -94,13 +113,14 @@ namespace Budgeting {
 				foreach (var Btn in Data.MainRadioButtons)
 					Btn.Checked = false;
 
-				SelBtn.Checked = true;
+				if (SelBtn != null)
+					SelBtn.Checked = true;
 			} else {
 				Data.MainRadioButtons.Clear();
 				Data.MainRadioButtons.Add(new MainRadioButton("Add Single", ManageDataState.AddSingle) { Checked = true });
-				Data.MainRadioButtons.Add(new MainRadioButton("Add Multiple", ManageDataState.AddMultiple) { Enabled = false });
+				Data.MainRadioButtons.Add(new MainRadioButton("Add Multiple", ManageDataState.AddMultiple) { Enabled = true });
 				Data.MainRadioButtons.Add(new MainRadioButton("Add Repeating", ManageDataState.AddRepeating) { Enabled = false });
-				Data.MainRadioButtons.Add(new MainRadioButton("Add MaestroPlus", ManageDataState.AddMaestroPlus) { Enabled = false });
+				Data.MainRadioButtons.Add(new MainRadioButton("Add MaestroPlus", ManageDataState.AddMaestroPlus) { Enabled = true });
 				Data.MainRadioButtons.Add(new MainRadioButton("Manage MaestroPlus", ManageDataState.ManageMaestroPlus) { Enabled = false });
 
 				foreach (var Btn in Data.MainRadioButtons)
@@ -108,6 +128,7 @@ namespace Budgeting {
 						mainRadioResult.Value = Btn.InputID;
 			}
 
+			btnBack.Visible = false;
 			divRadioOptions.Visible = true;
 			rptOptions.DataSource = Data.MainRadioButtons;
 			rptOptions.DataBind();
@@ -130,6 +151,31 @@ namespace Budgeting {
 			lblDateFrom.InnerText = "Transaction Date";
 
 			divCurAmt.Visible = true;
+			divComment.Visible = true;
+		}
+
+		void ShowMultipleTransaction() {
+			titleManageData.InnerText = "Insert Multiple Transactions";
+
+			divDateFrom.Visible = true;
+			lblDateFrom.InnerText = "Transaction From";
+
+			divDateTo.Visible = true;
+			lblDateTo.InnerText = "Transaction To";
+
+			divCurAmt.Visible = true;
+			divComment.Visible = true;
+		}
+
+		void ShowAddMaestro() {
+			titleManageData.InnerText = "Add Maestro Transaction";
+
+			divDateFrom.Visible = true;
+			lblDateFrom.InnerText = "Transaction From";
+
+			divMonthCount.Visible = true;
+			divCurAmt.Visible = true;
+			divComment.Visible = true;
 		}
 
 		void DisplayError(string Msg) {
@@ -137,8 +183,15 @@ namespace Budgeting {
 			labelError.Visible = true;
 		}
 
+		protected void Back_Click(object sender, EventArgs e) {
+			ManageDataSession Data = ManageDataSession.Get(this);
+			HandleShowState(Data, ManageDataState.Main, true);
+			Server.TransferRequest(Request.Url.AbsolutePath, false);
+		}
+
 		protected void Confirm_Click(object sender, EventArgs e) {
 			ManageDataSession Data = ManageDataSession.Get(this);
+			BudgetSession S = BudgetSession.Get(this);
 
 			switch (Data.State) {
 				case ManageDataState.Main: {
@@ -148,18 +201,70 @@ namespace Budgeting {
 					}
 
 				case ManageDataState.AddSingle: {
+						float Amt = float.Parse(inCurAmt.Value);
+						DateTime Date = DateTime.Parse(dateBegin.Value);
+
+						DAL DbDAL = new DAL();
+						Transaction T = new Transaction(S.CurrentUser, Date, Amt);
+						T.Description = inComment.Value.Trim();
+
+						DbDAL.Insert(T);
+						break;
+					}
+
+				case ManageDataState.AddMultiple: {
+						float Amt = float.Parse(inCurAmt.Value);
+						DateTime From = DateTime.Parse(dateBegin.Value);
+						DateTime To = DateTime.Parse(dateEnd.Value).AddDays(1);
+
+						DAL DbDAL = new DAL();
+
+						while (From < To) {
+							Transaction T = new Transaction(S.CurrentUser, From, Amt);
+							T.Description = inComment.Value.Trim();
+
+							DbDAL.Insert(T);
+							From = From.AddMonths(1);
+						}
 
 						break;
 					}
 
-				case ManageDataState.AddMultiple:
-					break;
-
 				case ManageDataState.AddRepeating:
 					break;
 
-				case ManageDataState.AddMaestroPlus:
-					break;
+				case ManageDataState.AddMaestroPlus: {
+						DAL DbDAL = new DAL();
+						MaestroPlusCalculator MaestroCalc = new MaestroPlusCalculator(DbDAL);
+
+						int MonthCount = int.Parse(inMonthCount.Value);
+						float Amt = float.Parse(inCurAmt.Value);
+						DateTime From = DateTime.Parse(dateBegin.Value);
+						string Comment = inComment.Value.Trim();
+
+						MaestroCalc.Calculate(MonthCount, Amt, out float OneTime, out float Monthly);
+
+						Transaction TOneTime = new Transaction(S.CurrentUser, From, -OneTime);
+						TOneTime.Description = "Maestro OneTime " + Comment;
+						DbDAL.Insert(TOneTime);
+
+						Transaction MaestroPayment = new Transaction(S.CurrentUser, From, Amt);
+						MaestroPayment.Description = Comment;
+						DbDAL.Insert(MaestroPayment);
+
+						From = From.AddMonths(1);
+
+						for (int i = 0; i < MonthCount; i++) {
+							Transaction MaestroMonthly = new Transaction(S.CurrentUser, From, -Monthly);
+							MaestroMonthly.Description = Comment;
+							MaestroMonthly.MaestroMonthly = 1;
+							DbDAL.Insert(MaestroMonthly);
+
+							From = From.AddMonths(1);
+						}
+
+						break;
+					}
 
 				case ManageDataState.ManageMaestroPlus:
 					break;

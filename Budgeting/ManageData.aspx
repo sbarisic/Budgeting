@@ -37,23 +37,27 @@
             </div>
         </div>
 
-
+        <%-- Month count box --%>
+        <div id="divMonthCount" class="row justify-content-md-center mt-4 input-group" runat="server" visible="false">
+            <input id="inMonthCount" type="number" class="form-control" aria-label="Text input" value="1" runat="server">
+        </div>
 
         <%-- Currency amount --%>
         <div id="divCurAmt" class="row justify-content-md-center mt-4 input-group" runat="server" visible="false">
-            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+            <input id="inCurAmt" type="text" class="form-control" aria-label="Text input with dropdown button" runat="server">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+                <button id="btnCurSel" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" runat="server">NONE</button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div role="separator" class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
+                    <a class="dropdown-item" href="#">HRK</a>
+                    <a class="dropdown-item" href="#">EUR</a>
                 </div>
             </div>
         </div>
 
+        <%-- Comment box --%>
+        <div id="divComment" class="row justify-content-md-center mt-4 input-group" runat="server" visible="false">
+            <input id="inComment" type="text" class="form-control" aria-label="Text input" value="Comment" runat="server">
+        </div>
 
 
         <%--Confirm button--%>
@@ -61,7 +65,10 @@
             <asp:Button ID="btnConfirm" CssClass="btn btn-lg btn-primary btn-block " Text="Confirm" OnClick="Confirm_Click" runat="server" />
         </div>
 
-
+        <%--Back button--%>
+        <div class="row justify-content-md-center mt-2 ">
+            <asp:Button ID="btnBack" CssClass="btn btn-lg btn-secondary btn-block " Text="Back" OnClick="Back_Click" runat="server" />
+        </div>
 
         <%--Error message--%>
         <div class="row justify-content-md-center mt-3">
