@@ -25,6 +25,15 @@ namespace Budgeting.Logic {
 		}
 	}
 
+	[DALTable("maestro_entries")]
+	class MaestroEntry : DbEntry {
+		[DALField("id")]
+		public int ID = 0;
+
+		[DALField("desc")]
+		public string Description;
+	}
+
 	[DALTable("transactions")]
 	class Transaction : DbEntry {
 		[DALField("id")]
@@ -42,8 +51,8 @@ namespace Budgeting.Logic {
 		[DALField("user")]
 		public int UserID;
 
-		[DALField("maestro_monthly")]
-		public int MaestroMonthly;
+		[DALField("maestro")]
+		public int? Maestro;
 
 		public Transaction() {
 		}

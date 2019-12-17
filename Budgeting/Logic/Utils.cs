@@ -5,8 +5,22 @@ using System.Net;
 using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Runtime.Serialization;
 
 namespace Budgeting.Logic {
+	[Serializable]
+	public class DisplayException : Exception {
+		public DisplayException() {
+		}
+
+		public DisplayException(string message) : base(message) { }
+
+		public DisplayException(string message, Exception inner) : base(message, inner) { }
+
+		protected DisplayException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+	}
+
+
 	public static class Utils {
 		const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		static Random Rnd = new Random();

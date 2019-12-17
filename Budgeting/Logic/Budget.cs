@@ -119,20 +119,27 @@ namespace Budgeting.Logic {
 
 			foreach (var T in Transactions) {
 				Sum += T.Value;
+				ItemColor Clr = ItemColor.Green;
 
-				if (T.Value > 0)
-					LC.AddItem(T.FormatValue(), ItemColor.Green, T.ID.ToString(), OnTransactionRemove);
-				else {
-					ItemColor Clr = ItemColor.Red;
-
-					if (T.MaestroMonthly != 0)
+				if (T.Value > 0) {
+					if (T.Maestro == null)
+						Clr = ItemColor.Green;
+					else
+						Clr = ItemColor.Info;
+				} else {
+					if (T.Maestro == null)
+						Clr = ItemColor.Red;
+					else if (T.Maestro != null)
 						Clr = ItemColor.Orange;
-
-					LC.AddItem(T.FormatValue(), Clr, T.ID.ToString(), OnTransactionRemove);
 				}
+
+				LC.AddItem(T.FormatValue(), Clr, T.ID.ToString(), OnTransactionRemove);
 			}
 
 			LC.AddItem(Transaction.FormatValue(Sum));
+
+			LC.AddItem("Available Maestro<br/>999", ItemColor.Info);
+			///Transaction.FormatValue(999);
 		}
 
 		void OnTransactionRemove(HttpServerUtility Server, HttpRequest Request, ListControlEntry Entry) {

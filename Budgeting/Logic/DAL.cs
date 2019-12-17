@@ -65,12 +65,12 @@ namespace Budgeting.Logic {
 			Con.Close();
 		}
 
-		public DataTable Query(string TableName, SQLiteParameter[] Params, QueryMode Mode) {
+		public DataTable Query(string TableName, SQLiteParameter[] Params, QueryMode Mode, int LimitCount = 0) {
 			Open();
 
 			string SelectQuery = "select * from " + TableName;
 
-			if (Params.Length > 0) {
+			if (Params != null && Params.Length > 0) {
 				SelectQuery = SelectQuery + " where ";
 				List<string> Conditions = new List<string>();
 
@@ -80,9 +80,13 @@ namespace Budgeting.Logic {
 				SelectQuery = SelectQuery + string.Join(string.Format(" {0} ", Mode), Conditions);
 			}
 
+			if (LimitCount > 0)
+				SelectQuery = string.Format("{0} order by rowid desc limit {1}", SelectQuery, LimitCount);
+
 			using (SQLiteCommand Cmd = Con.CreateCommand())
 			using (SQLiteDataAdapter Adapter = new SQLiteDataAdapter(SelectQuery, Con)) {
-				Adapter.SelectCommand.Parameters.AddRange(Params);
+				if (Params != null)
+					Adapter.SelectCommand.Parameters.AddRange(Params);
 
 				DataSet.Reset();
 				Adapter.Fill(DataSet);
@@ -108,8 +112,19 @@ namespace Budgeting.Logic {
 					if (ColVal is DBNull)
 						ColVal = null;
 
-					if (ColVal != null && ColVal.GetType() != Fields[j].FieldType)
-						ColVal = Convert.ChangeType(ColVal, Fields[j].FieldType);
+					Type FT = Fields[j].FieldType;
+
+					if (ColVal != null && ColVal.GetType() != FT) {
+						Type Underlying;
+
+						if ((Underlying = Nullable.GetUnderlyingType(FT)) != null) {
+							if (ColVal != null) {
+								ColVal = Convert.ChangeType(ColVal, Underlying);
+								ColVal = Activator.CreateInstance(FT, new[] { ColVal });
+							}
+						} else
+							ColVal = Convert.ChangeType(ColVal, FT);
+					}
 
 					Fields[j].SetValue(Obj, ColVal);
 				}
@@ -156,6 +171,11 @@ namespace Budgeting.Logic {
 			}
 
 			Close();
+
+			using (DataTable DT = Query(TableName, null, QueryMode.AND, 1)) {
+				int ID = (int)DT.Rows[0].Field<long>("id");
+				typeof(T).GetField("ID").SetValue(Val, ID);
+			}
 		}
 
 		public void Insert<T>(T Val) where T : DbEntry {

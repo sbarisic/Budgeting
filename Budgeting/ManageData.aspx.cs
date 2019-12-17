@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Data.SQLite;
+using System.Diagnostics;
 
 namespace Budgeting {
 	public class MainRadioButton {
@@ -193,6 +194,22 @@ namespace Budgeting {
 			ManageDataSession Data = ManageDataSession.Get(this);
 			BudgetSession S = BudgetSession.Get(this);
 
+			try {
+				HandleStateConfirm(Data, S);
+			} catch (DisplayException E) {
+				labelError.Visible = true;
+				labelError.InnerText = E.Message;
+				return;
+			} catch (Exception E) when (!Debugger.IsAttached) {
+				labelError.Visible = true;
+				labelError.InnerText = "Internal exception occured in HandleStateConfirm";
+				return;
+			}
+
+			Server.TransferRequest(Request.Url.AbsolutePath, false);
+		}
+
+		void HandleStateConfirm(ManageDataSession Data, BudgetSession S) {
 			switch (Data.State) {
 				case ManageDataState.Main: {
 						MainRadioButton Next = GetMainRadioButton(Data);
@@ -201,8 +218,11 @@ namespace Budgeting {
 					}
 
 				case ManageDataState.AddSingle: {
-						float Amt = float.Parse(inCurAmt.Value);
-						DateTime Date = DateTime.Parse(dateBegin.Value);
+						if (!float.TryParse(inCurAmt.Value, out float Amt))
+							throw new DisplayException("Could not parse currency amount");
+
+						if (!DateTime.TryParse(dateBegin.Value, out DateTime Date))
+							throw new DisplayException("Could not parse date");
 
 						DAL DbDAL = new DAL();
 						Transaction T = new Transaction(S.CurrentUser, Date, Amt);
@@ -213,9 +233,16 @@ namespace Budgeting {
 					}
 
 				case ManageDataState.AddMultiple: {
-						float Amt = float.Parse(inCurAmt.Value);
-						DateTime From = DateTime.Parse(dateBegin.Value);
-						DateTime To = DateTime.Parse(dateEnd.Value).AddDays(1);
+						if (!float.TryParse(inCurAmt.Value, out float Amt))
+							throw new DisplayException("Could not parse currency amount");
+
+						if (!DateTime.TryParse(dateBegin.Value, out DateTime From))
+							throw new DisplayException("Could not parse From date");
+
+						if (!DateTime.TryParse(dateEnd.Value, out DateTime To))
+							throw new DisplayException("Could not parse To date");
+						else
+							To = To.AddDays(1);
 
 						DAL DbDAL = new DAL();
 
@@ -244,12 +271,18 @@ namespace Budgeting {
 
 						MaestroCalc.Calculate(MonthCount, Amt, out float OneTime, out float Monthly);
 
+						MaestroEntry MaestroEntry = new MaestroEntry();
+						MaestroEntry.Description = Comment;
+						DbDAL.Insert(MaestroEntry);
+
 						Transaction TOneTime = new Transaction(S.CurrentUser, From, -OneTime);
 						TOneTime.Description = "Maestro OneTime " + Comment;
+						TOneTime.Maestro = MaestroEntry.ID;
 						DbDAL.Insert(TOneTime);
 
 						Transaction MaestroPayment = new Transaction(S.CurrentUser, From, Amt);
 						MaestroPayment.Description = Comment;
+						MaestroPayment.Maestro = MaestroEntry.ID;
 						DbDAL.Insert(MaestroPayment);
 
 						From = From.AddMonths(1);
@@ -257,7 +290,7 @@ namespace Budgeting {
 						for (int i = 0; i < MonthCount; i++) {
 							Transaction MaestroMonthly = new Transaction(S.CurrentUser, From, -Monthly);
 							MaestroMonthly.Description = Comment;
-							MaestroMonthly.MaestroMonthly = 1;
+							MaestroMonthly.Maestro = MaestroEntry.ID;
 							DbDAL.Insert(MaestroMonthly);
 
 							From = From.AddMonths(1);
@@ -272,18 +305,6 @@ namespace Budgeting {
 				default:
 					throw new Exception("Invalid state " + Data.State);
 			}
-
-
-
-			/*if (DateTime.TryParse(dateBegin.Value, out DateTime DateBegin)) {
-				Out += DateBegin.ToString() + " to ";
-			}
-
-			if (DateTime.TryParse(dateEnd.Value, out DateTime DateEnd)) {
-				Out += DateEnd.ToString();
-			}*/
-
-			Server.TransferRequest(Request.Url.AbsolutePath, false);
 		}
 	}
 }
